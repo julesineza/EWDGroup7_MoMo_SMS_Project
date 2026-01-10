@@ -26,8 +26,8 @@ Architecture Diagram:
 https://draw.io-link-here (replace with actual link)
 
 ## Scrum Board
-Project Board:  
-https://github-projects-or-trello-link-here
+Trello Project Board:  
+(https://trello.com/invite/b/6962965c59508e6196870656/ATTI01572b19ae2292c8ecaaa91d9f80b5d6A494334E/ewdgroup7momosmsproject)
 
 ## Setup (placeholder)
 Instructions will be added in later weeks.
