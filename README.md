@@ -23,7 +23,7 @@ The system follows an ETL pipeline:
 
 ## High-Level Architecture
 Architecture Diagram:  
-https://draw.io-link-here (replace with actual link)
+(https://miro.com/welcomeonboard/NHFOQzBGcjJuZ0RqQUtxNW9CR0FvaFZ6ejZ5LzNmNk5QUTYrMWE3L09hMko4WVdTZ1JIK2x3czZwM1dINkVTUkhmRFNYVW43aFhvNW1ZWGQ4V1JvT1ZSVXpPRkJSWUNIVE9weUtiVzVReEJsVk1HZDY1THdoeUdxK2hnLytWemxQdGo1ZEV3bUdPQWRZUHQzSGl6V2NBPT0hdjE=?share_link_id=242889040250)
 
 ## Scrum Board
 Trello Project Board:  
