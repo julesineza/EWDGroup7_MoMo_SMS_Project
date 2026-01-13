@@ -10,10 +10,7 @@ venv/
 .env/
 
 # Data (do not commit raw or generated data)
-data/raw/
-data/processed/
-data/db.sqlite3
-data/logs/
+data/raw
 
 # OS
 .DS_Store
