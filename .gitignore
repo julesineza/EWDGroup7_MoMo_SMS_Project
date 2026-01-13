@@ -10,7 +10,7 @@ venv/
 .env/
 
 # Data (do not commit raw or generated data)
-data/raw
+data/raw/
 
 # OS
 .DS_Store
