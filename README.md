@@ -10,7 +10,7 @@ MoMo Insights Team
 - Charles Were Angoye – [c.angoye@alustudent.com](mailto:c.angoye@alustudent.com)
 - Nyiramanzi Igihozo– [n.igihozo@alustudent.com](mailto:n.igihozo@alustudent.com)
 - Nawaf Awadallah Ahmed – [n.ahmed@alustudent.com](mailto:n.ahmed@alustudent.com)
-- Esther Mahoro - [e.mahoro@alustudent.com] (mailto:e.mahoro@alustudent.com)
+- Esther Mahoro – [e.mahoro@alustudent.com](mailto:e.mahoro@alustudent.com)
 
 ## Project Description
 This project processes MoMo SMS messages provided in XML format, cleans and categorizes the transactions, stores them in a relational database, and visualizes insights using a frontend dashboard.
