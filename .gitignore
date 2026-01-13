@@ -1,0 +1,19 @@
+# Environment variables
+.env
+
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+.env/
+
+# Data (do not commit raw or generated data)
+data/raw/
+data/processed/
+data/db.sqlite3
+data/logs/
+
+# OS
+.DS_Store
