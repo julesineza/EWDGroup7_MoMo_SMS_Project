@@ -45,3 +45,30 @@ insert into TRANSACTION_CATEGORY (category_id, category_name, category_type, des
 ('CAT-BILL', 'Utility Bill', 'Payment', 'Paying for electricity, water, internet services or taxes'),
 ('CAT-WDR', 'Agent Withdrawal', 'Withdrawal', 'Taking out physical money from your MoMo wallet from an authorized MoMo agents'),
 ('CAT-SAL', 'Salary Deposit', 'Receive', 'Montly salary payment credited to the worker account');
+
+-- Create table of Transactions
+
+create table TRANSACTIONS (
+    transaction_id VARCHAR(20) PRIMARY KEY COMMENT 'Unique identifier of each transaction, typically UUID string as well',
+    sender_id VARCHAR(20) NOT NULL COMMENT 'Unique identifier of each sender, typically UUID string and also it is FOREIGN KEY from Users table',
+    receiver_id VARCHAR(20) NOT NULL COMMENT 'Unique identifier of each receiver, typically UUID string and also it is FOREIGN KEY from Users table',
+    category_id VARCHAR(20) NOT NULL COMMENT 'Unique identifier of each category, typically UUID string and also it is FOREIGN KEY  from Transaction_category table',
+    amount DECIMAL(15, 2) NOT NULL COMMENT 'This is the amount that has been received, sent, paid, withdrawaled, or deposited',
+    balance_before DECIMAL(15, 2) COMMENT 'This is the balance of user haved before any transaction made',
+    balance_after DECIMAL(15, 2) COMMENT 'Then this the updated balance of the user after any transaction made',
+    transaction_date DATETIME COMMENT 'This is when the transaction tooked place',
+    message_sender VARCHAR(250),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('Completed', 'Pending', 'Failed', 'Reversed'),
+    Foreign Key (sender_id) REFERENCES USERS (user_id),
+    Foreign Key (reciever_id) REFERENCES USERS (user_id),
+    Foreign Key (category_id) REFERENCES TRANSACTION_CATEGORY (category_id),
+
+    -- You can't use negative numbers
+    CONSTRAINT chk_positive_txn CHECK (amount > 0),
+
+    -- You can't send money to yourself
+    CONSTRAINT chk_different_users CHECK (sender_id <> receiver_id)
+);
+
+
