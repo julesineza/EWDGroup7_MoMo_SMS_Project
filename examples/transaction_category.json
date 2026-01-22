@@ -1,0 +1,7 @@
+{
+  "categoryId": "CAT-MERCH",
+  "categoryName": "Merchant Pay",
+  "categoryType": "payment",
+  "description": "Payment to a registered merchant code",
+  "createdAt": "2023-01-01T10:00:00Z"
+}
