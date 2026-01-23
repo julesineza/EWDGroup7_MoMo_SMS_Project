@@ -81,3 +81,35 @@ INSERT INTO TRANSACTIONS (transaction_id, sender_id, receiver_id, category_id, a
 ('TXN-004', 'u_04', 'u_05', 'CAT-WDR', 5000.00, 10000.00, 5000.00, NOW(), 'Agent withdrawal', 'Failed'),
 ('TXN-005', 'u_05', 'u_01', 'CAT-DEP', 40000.00, 100000.00, 160000.00, NOW(), 'Bank deposit', 'Completed');
 
+-- System Logs table
+
+create table SYSTEM_LOGS (
+    log_id VARCHAR(20) PRIMARY KEY,
+    log_type ENUM('INFO', 'WARNING', 'ERROR', 'DEBUG'),
+    message TEXT NOT NULL,
+    user_id VARCHAR(20) NULL,
+    transaction_id VARCHAR(20) NULL, -- Relationships (Foreign Keys) set to allow NULL
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Foreign Key (user_id) REFERENCES USERS (user_id),
+    Foreign Key (transaction_id) REFERENCES TRANSACTIONS (transaction_id)
+
+)
+
+-- Records For The System Logs
+
+insert into SYSTEM_LOGS(log_id, log_type, message, user_id, transaction_id) VALUES
+('LOG-001', 'INFO', 'User logged in successfully', 'u_01', NULL),
+('LOG-002', 'ERROR', 'Insufficient funds for transfer', 'u_02','TXN-005'),
+('LOG-003', 'WARNING', 'Multiple failed login attempts detected', 'u_03', NULL),
+('LOG-004', 'DEBUG', 'SMS gateway response: 200 OK', NULL, 'TXN-001'),
+('LOG-005', 'INFO', 'Transaction completed successfully', 'u_05', 'TXN-004');
+
+-- Transaction System Log Table
+
+create table TRANSACTION_SYSTEM_LOG (
+    system_log_id VARCHAR(20) PRIMARY KEY,
+    transaction_id VARCHAR(20),
+    log_id VARCHAR(20),
+    Foreign Key (transaction_id) REFERENCES TRANSACTIONS (transaction_id),
+    Foreign Key (log_id) REFERENCES SYSTEM_LOGS(log_id)
+);
