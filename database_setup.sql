@@ -93,7 +93,7 @@ create table SYSTEM_LOGS (
     Foreign Key (user_id) REFERENCES USERS (user_id),
     Foreign Key (transaction_id) REFERENCES TRANSACTIONS (transaction_id)
 
-)
+);
 
 -- Records For The System Logs
 
