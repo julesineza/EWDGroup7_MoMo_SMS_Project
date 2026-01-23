@@ -56,7 +56,7 @@ create table TRANSACTIONS (
     amount DECIMAL(15, 2) NOT NULL, -- This is the amount that has been received, sent, paid, withdrawaled, or deposited
     balance_before DECIMAL(15, 2), -- This is the balance of user haved before any transaction done
     balance_after DECIMAL(15, 2), -- Then this the updated balance of the user after any transaction done
-    transaction_date DATETIME, -- This is when the transaction tooked place
+    transaction_date DATETIME NOT NULL, -- This is when the transaction tooked place
     message_sender VARCHAR(250),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status ENUM('Completed', 'Pending', 'Failed', 'Reversed'),
