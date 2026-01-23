@@ -104,7 +104,7 @@ insert into SYSTEM_LOGS(log_id, log_type, message, user_id, transaction_id) VALU
 ('LOG-004', 'DEBUG', 'SMS gateway response: 200 OK', NULL, 'TXN-001'),
 ('LOG-005', 'INFO', 'Transaction completed successfully', 'u_05', 'TXN-004');
 
--- Transaction System Log Table
+-- Transaction System Log Table (Creating Many-to-Many Cardinality)
 
 create table TRANSACTION_SYSTEM_LOG (
     system_log_id VARCHAR(20) PRIMARY KEY,
@@ -113,3 +113,13 @@ create table TRANSACTION_SYSTEM_LOG (
     Foreign Key (transaction_id) REFERENCES TRANSACTIONS (transaction_id),
     Foreign Key (log_id) REFERENCES SYSTEM_LOGS(log_id)
 );
+
+-- Records for Transaction System Logs
+
+insert into TRANSACTION_SYSTEM_LOG (system_log_id, transaction_id, log_id) VALUES
+('TSL-001', 'TXN-001', 'LOG-004'), -- Links a success txn to a success log
+('TSL-002', 'TXN-004', 'LOG-002'), -- Links a failed txn to an error log
+('TSL-003', 'TXN-005', 'LOG-005'), -- Links a bank deposit to a debug log
+('TSL-004', 'TXN-002', 'LOG-004'), -- Another txn link
+('TSL-005', 'TXN-003', 'LOG-005'); -- Linking a pending txn to a debug log
+
