@@ -46,4 +46,33 @@ insert into TRANSACTION_CATEGORY (category_id, category_name, category_type, des
 ('CAT-WDR', 'Agent Withdrawal', 'Withdrawal', 'Taking out physical money from your MoMo wallet from an authorized MoMo agents'),
 ('CAT-SAL', 'Salary Deposit', 'Received', 'Monthly salary payment credited to the worker account');
 
+-- Create table of Transactions
+
+create table TRANSACTIONS (
+    transaction_id VARCHAR(20) PRIMARY KEY, -- Unique identifier of each transaction, typically UUID string as well
+    sender_id VARCHAR(20) NOT NULL, -- Unique identifier of each sender, typically UUID string and also it is FOREIGN KEY from Users table
+    receiver_id VARCHAR(20) NOT NULL, -- Unique identifier of each receiver, typically UUID string and also it is FOREIGN KEY from Users table
+    category_id VARCHAR(20) NOT NULL, -- Unique identifier of each category, typically UUID string and also it is FOREIGN KEY  from Transaction_category table
+    amount DECIMAL(15, 2) NOT NULL, -- This is the amount that has been received, sent, paid, withdrawaled, or deposited
+    balance_before DECIMAL(15, 2), -- This is the balance of user haved before any transaction done
+    balance_after DECIMAL(15, 2), -- Then this the updated balance of the user after any transaction done
+    transaction_date DATETIME NOT NULL, -- This is when the transaction tooked place
+    message_sender VARCHAR(250),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('Completed', 'Pending', 'Failed', 'Reversed'),
+    Foreign Key (sender_id) REFERENCES USERS (user_id),
+    Foreign Key (receiver_id) REFERENCES USERS (user_id),
+    Foreign Key (category_id) REFERENCES TRANSACTION_CATEGORY (category_id)
+
+
+);
+
+-- Records for Transactions table
+
+INSERT INTO TRANSACTIONS (transaction_id, sender_id, receiver_id, category_id, amount, balance_before, balance_after, transaction_date, message_sender, status) VALUES
+('TXN-001', 'u_01', 'u_02', 'CAT-P2P', 30000.00, 100000.00, 50000.00, NOW(), 'Transfering Money to Hannington', 'Completed'),
+('TXN-002', 'u_02', 'u_03', 'CAT-P2P', 60000.50, 100000.00, 40000.00, NOW(), 'Reversing money from Kulio to Kevin', 'Pending'),
+('TXN-003', 'u_03', 'u_04', 'CAT-BILL', 10000.00, 25000.00, 15000.00, NOW(), 'Airtime payment', 'Completed'),
+('TXN-004', 'u_04', 'u_05', 'CAT-WDR', 5000.00, 10000.00, 5000.00, NOW(), 'Agent withdrawal', 'Failed'),
+('TXN-005', 'u_05', 'u_01', 'CAT-DEP', 40000.00, 100000.00, 160000.00, NOW(), 'Bank deposit', 'Completed');
 
