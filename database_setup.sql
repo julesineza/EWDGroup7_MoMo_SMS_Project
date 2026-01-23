@@ -62,7 +62,7 @@ create table TRANSACTIONS (
     status ENUM('Completed', 'Pending', 'Failed', 'Reversed'),
     Foreign Key (sender_id) REFERENCES USERS (user_id),
     Foreign Key (receiver_id) REFERENCES USERS (user_id),
-    Foreign Key (category_id) REFERENCES TRANSACTION_CATEGORY (category_id)
+    Foreign Key (category_id) REFERENCES TRANSACTION_CATEGORY (category_id),
 
     -- You can't use negative numbers (NB:If it isn't running especially in Vscode check the version of mysql you are using)
      CONSTRAINT chk_positive_txn CHECK (amount > 0),
