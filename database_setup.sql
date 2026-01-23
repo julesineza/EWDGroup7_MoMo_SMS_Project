@@ -5,7 +5,7 @@ create database MoMo;
 -- Use that database for creating tables
 
 use MoMo;
-SELECT DATABASE(); -- To make sure which database you are using
+SELECT DATABASE(); 
 
 -- First we gonna create table for storing user's data (Is the main one)
 
@@ -32,8 +32,8 @@ insert into USERS (user_id, full_name, phone_number, reg_date, last_transaction,
 create table TRANSACTION_CATEGORY (
     category_id VARCHAR(20) PRIMARY KEY, -- Unique identifier for each category, typically UUID string also
     category_name VARCHAR(50) NOT NULL UNIQUE, -- Category of the transaction
-    category_type ENUM('Received', 'Send', 'Payment', 'Withdrawal', 'Deposit'), -- This is the type of transaction occured
-    description TEXT, -- This is a text message describing the transaction occured
+    category_type ENUM('Received', 'Send', 'Payment', 'Withdrawal', 'Deposit'), -- This is the type of transaction that occured
+    description TEXT, -- This is a text message that comes with the transaction promotional ...
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- This automatically generated time of when the transaction occured
 );
 
@@ -76,3 +76,11 @@ INSERT INTO TRANSACTIONS (transaction_id, sender_id, receiver_id, category_id, a
 ('TXN-004', 'u_04', 'u_05', 'CAT-WDR', 5000.00, 10000.00, 5000.00, NOW(), 'Agent withdrawal', 'Failed'),
 ('TXN-005', 'u_05', 'u_01', 'CAT-DEP', 40000.00, 100000.00, 160000.00, NOW(), 'Bank deposit', 'Completed');
 
+-- Indexes for faster read times in teh tables.
+
+CREATE INDEX idx_users_phone ON USERS(phone_number);
+CREATE INDEX idx_transactions_sender ON TRANSACTIONS(sender_id);
+CREATE INDEX idx_transactions_receiver ON TRANSACTIONS(receiver_id);
+CREATE INDEX idx_transactions_date ON TRANSACTIONS(transaction_date);
+CREATE INDEX idx_transactions_status ON TRANSACTIONS(status);
+CREATE INDEX idx_system_logs_user ON SYSTEM_LOGS(user_id);
