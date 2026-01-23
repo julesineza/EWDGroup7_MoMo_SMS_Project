@@ -64,11 +64,20 @@ create table TRANSACTIONS (
     Foreign Key (receiver_id) REFERENCES USERS (user_id),
     Foreign Key (category_id) REFERENCES TRANSACTION_CATEGORY (category_id)
 
-    -- You can't use negative numbers
+    -- You can't use negative numbers (NB:If it isn't running especially in Vscode check the version of mysql you are using)
      CONSTRAINT chk_positive_txn CHECK (amount > 0),
 
-    -- You can't send money to yourself
+    -- You can't send money to yourself (NB:If it isn't running especially in Vscode check the version of mysql you are using)
     CONSTRAINT chk_different_users CHECK (sender_id <> receiver_id)
     
 );
+
+-- Records for Transactions table
+
+INSERT INTO TRANSACTIONS (transaction_id, sender_id, receiver_id, category_id, amount, balance_before, balance_after, transaction_date, message_sender, status) VALUES
+('TXN-001', 'u_01', 'u_02', 'CAT-P2P', 30000.00, 100000.00, 50000.00, NOW(), 'Transfering Money to Hannington', 'Completed'),
+('TXN-002', 'u_02', 'u_03', 'CAT-P2P', 60000.50, 100000.00, 40000.00, NOW(), 'Reversing money from Kulio to Kevin', 'Pending'),
+('TXN-003', 'u_03', 'u_04', 'CAT-BILL', 10000.00, 25000.00, 15000.00, NOW(), 'Airtime payment', 'Completed'),
+('TXN-004', 'u_04', 'u_05', 'CAT-WDR', 5000.00, 10000.00, 5000.00, NOW(), 'Agent withdrawal', 'Failed'),
+('TXN-005', 'u_05', 'u_01', 'CAT-DEP', 40000.00, 100000.00, 160000.00, NOW(), 'Bank deposit', 'Completed');
 
