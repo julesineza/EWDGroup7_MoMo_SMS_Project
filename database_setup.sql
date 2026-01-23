@@ -27,4 +27,23 @@ insert into USERS (user_id, full_name, phone_number, reg_date, last_transaction,
 ('u_04', 'Kellia INEZA', '+250788414004', '2025-08-08 11:55:28', '2025-12-02 15:22:37', NOW()),
 ('u_05', 'Angel MUGISHA', '+250788425005', '2025-05-25 12:18:47', '2026-01-22 17:30:19', NOW());
 
+-- Create table of Transaction_category
+
+create table TRANSACTION_CATEGORY (
+    category_id VARCHAR(20) PRIMARY KEY, -- Unique identifier for each category, typically UUID string also
+    category_name VARCHAR(50) NOT NULL UNIQUE, -- Category of the transaction
+    category_type ENUM('Received', 'Send', 'Payment', 'Withdrawal', 'Deposit'), -- This is the type of transaction occured
+    description TEXT, -- This is a text message describing the transaction occured
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- This automatically generated time of when the transaction occured
+);
+
+-- Records for Transaction_category table
+
+insert into TRANSACTION_CATEGORY (category_id, category_name, category_type, description) VALUES
+('CAT-P2P', 'Peer to peer', 'Send', 'Transferring money from two individual personal account'),
+('CAT-DEP', 'Bank Deposit', 'Deposit', 'Moving money from a linked bank account to MoMo account'),
+('CAT-BILL', 'Utility Bill', 'Payment', 'Paying for electricity, water, internet services or taxes'),
+('CAT-WDR', 'Agent Withdrawal', 'Withdrawal', 'Taking out physical money from your MoMo wallet from an authorized MoMo agents'),
+('CAT-SAL', 'Salary Deposit', 'Received', 'Monthly salary payment credited to the worker account');
+
 
