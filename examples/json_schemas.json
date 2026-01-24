@@ -39,7 +39,7 @@
     "balance_before": { "type": "number" },
     "balance_after": { "type": "number" },
 
-    // --- Enum & Dates ---
+    
     "status": {
       "type": "string",
       "enum": ["completed", "pending", "failed", "reversed"],
