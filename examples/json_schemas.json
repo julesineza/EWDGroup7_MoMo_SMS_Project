@@ -1,36 +1,75 @@
 {
-  "transactionId": "17818959211",
-  "status": "completed",
-  "amount": 2000.00,
-  "currency": "RWF",
-  "fee": 0.00,
-  "transDate": "2026-01-11T18:48:42Z",
-  "messageSender": "Payment to merchant",
-  
-  "sender": {
-    "userId": "USR-001",
-    "name": "My Account",
-    "phoneNumber": "250788110381"
-  },
-  
-  "receiver": {
-    "userId": "USR-002",
-    "name": "Samuel Carter",
-    "phoneNumber": "250791666666"
-  },
-  
-  "category": {
-    "categoryId": "CAT-MERCH",
-    "name": "Merchant Pay",
-    "type": "payment"
-  },
-  
-  "systemLogs": [
-    {
-      "logId": "LOG-8821",
-      "type": "info",
-      "message": "SMS processed successfully",
-      "timestamp": "2026-01-12T03:47:45Z"
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Momo transaction",
+  "description": "A financial transaction record in the mobile money system.",
+  "type": "object",
+  "required": ["transaction_id", "sender_id", "category_id", "amount", "status", "created_at"],
+  "properties": {
+    "transaction_id": {
+      "type": "string",
+      "maxLength": 20,
+      "description": "Primary Key from Transactions table"
+    },
+    
+    "sender_id": {
+      "type": "string",
+      "maxLength": 20,
+      "description": "Reference to users table"
+    },
+    "receiver_id": {
+      "type": "string",
+      "maxLength": 20,
+      "description": "Reference to users table (Nullable in Logic implies External Transfers?)"
+    },
+    "category_id": {
+      "type": "string",
+      "maxLength": 20,
+      "description": "Reference to transaction_category table"
+    },
+
+
+    "amount": {
+      "type": "number",
+      "description": "Mapped from decimal(15,2)"
+    },
+    "fee": {
+      "type": "number",
+      "default": 0.00
+    },
+    "balance_before": { "type": "number" },
+    "balance_after": { "type": "number" },
+
+    // --- Enum & Dates ---
+    "status": {
+      "type": "string",
+      "enum": ["completed", "pending", "failed", "reversed"],
+      "description": "Strict ENUM mapping from ERD"
+    },
+    "trans_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "message_sender": {
+      "type": "string",
+      "maxLength": 250
+    },
+
+
+    "logs": {
+      "type": "array",
+      "description": "Derived from system_logs linked via transaction_system_log",
+      "items": {
+        "type": "object",
+        "properties": {
+          "log_id": { "type": "string" },
+          "log_type": { 
+            "type": "string", 
+            "enum": ["INFO", "WARNING", "ERROR", "DEBUG"] 
+          },
+          "message": { "type": "string" },
+          "created_at": { "type": "string", "format": "date-time" }
+        }
+      }
     }
-  ]
+  }
 }
