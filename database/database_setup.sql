@@ -84,3 +84,45 @@ CREATE INDEX idx_transactions_receiver ON TRANSACTIONS(receiver_id);
 CREATE INDEX idx_transactions_date ON TRANSACTIONS(transaction_date);
 CREATE INDEX idx_transactions_status ON TRANSACTIONS(status);
 CREATE INDEX idx_system_logs_user ON SYSTEM_LOGS(user_id);
+
+-- System Logs table
+
+create table SYSTEM_LOGS (
+    log_id VARCHAR(20) PRIMARY KEY,
+    log_type ENUM('INFO', 'WARNING', 'ERROR', 'DEBUG'),
+    message TEXT NOT NULL,
+    user_id VARCHAR(20) NULL,
+    transaction_id VARCHAR(20) NULL, -- Relationships (Foreign Keys) set to allow NULL
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Foreign Key (user_id) REFERENCES USERS (user_id),
+    Foreign Key (transaction_id) REFERENCES TRANSACTIONS (transaction_id)
+
+);
+
+-- Records For The System Logs
+
+insert into SYSTEM_LOGS(log_id, log_type, message, user_id, transaction_id) VALUES
+('LOG-001', 'INFO', 'User logged in successfully', 'u_01', NULL),
+('LOG-002', 'ERROR', 'Insufficient funds for transfer', 'u_02','TXN-005'),
+('LOG-003', 'WARNING', 'Multiple failed login attempts detected', 'u_03', NULL),
+('LOG-004', 'DEBUG', 'SMS gateway response: 200 OK', NULL, 'TXN-001'),
+('LOG-005', 'INFO', 'Transaction completed successfully', 'u_05', 'TXN-004');
+
+-- Transaction System Log Table (Creating Many-to-Many Cardinality)
+
+create table TRANSACTION_SYSTEM_LOG (
+    system_log_id VARCHAR(20) PRIMARY KEY,
+    transaction_id VARCHAR(20),
+    log_id VARCHAR(20),
+    Foreign Key (transaction_id) REFERENCES TRANSACTIONS (transaction_id),
+    Foreign Key (log_id) REFERENCES SYSTEM_LOGS(log_id)
+);
+
+-- Records for Transaction System Logs
+
+insert into TRANSACTION_SYSTEM_LOG (system_log_id, transaction_id, log_id) VALUES
+('TSL-001', 'TXN-001', 'LOG-004'), -- Links a success txn to a success log
+('TSL-002', 'TXN-004', 'LOG-002'), -- Links a failed txn to an error log
+('TSL-003', 'TXN-005', 'LOG-005'), -- Links a bank deposit to a debug log
+('TSL-004', 'TXN-002', 'LOG-004'), -- Another txn link
+('TSL-005', 'TXN-003', 'LOG-005'); -- Linking a pending txn to a debug log
