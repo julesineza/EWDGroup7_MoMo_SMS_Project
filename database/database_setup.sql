@@ -5,17 +5,17 @@ create database MoMo;
 -- Use that database for creating tables
 
 use MoMo;
-SELECT DATABASE(); 
+SELECT DATABASE(); -- To make sure which database you are using
 
 -- First we gonna create table for storing user's data (Is the main one)
 
 create table USERS (
-    user_id VARCHAR(20) PRIMARY KEY, -- Unique identifier  for each user, typically UUID string
-    full_name VARCHAR(100) NOT NULL, -- The legal names of the account holder
-    phone_number VARCHAR(30) NOT NULL UNIQUE, -- Unique phone number of the user
-    reg_date DATETIME,
-    last_transaction DATETIME, -- This is the date and time of the last transaction has been occured
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- This is when the transaction has been occured
+    user_id VARCHAR(20) PRIMARY KEY COMMENT 'Unique identifier  for each user, typically UUID string',
+    full_name VARCHAR(100) NOT NULL COMMENT 'The legal names of the account holder',
+    phone_number VARCHAR(30) NOT NULL UNIQUE COMMENT 'Unique phone number of the user',
+    reg_date DATETIME COMMENT 'Registration date',
+    last_transaction DATETIME COMMENT 'This is the date and time of the last transaction has been occured',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'This is when the transaction has been occured'
 );
 
 -- Records for the Users table
@@ -30,11 +30,11 @@ insert into USERS (user_id, full_name, phone_number, reg_date, last_transaction,
 -- Create table of Transaction_category
 
 create table TRANSACTION_CATEGORY (
-    category_id VARCHAR(20) PRIMARY KEY, -- Unique identifier for each category, typically UUID string also
-    category_name VARCHAR(50) NOT NULL UNIQUE, -- Category of the transaction
-    category_type ENUM('Received', 'Send', 'Payment', 'Withdrawal', 'Deposit'), -- This is the type of transaction that occured
-    description TEXT, -- This is a text message that comes with the transaction promotional ...
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- This automatically generated time of when the transaction occured
+    category_id VARCHAR(20) PRIMARY KEY COMMENT 'Unique identifier for each category, typically UUID string also',
+    category_name VARCHAR(50) NOT NULL UNIQUE COMMENT 'Category of the transaction'
+    category_type ENUM('Received', 'Send', 'Payment', 'Withdrawal', 'Deposit') COMMENT 'This is the type of transaction occured',
+    description TEXT COMMENT 'This is a text message describing the transaction occured',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'This automatically generated time of when the transaction occured'
 );
 
 -- Records for Transaction_category table
@@ -49,22 +49,22 @@ insert into TRANSACTION_CATEGORY (category_id, category_name, category_type, des
 -- Create table of Transactions
 
 create table TRANSACTIONS (
-    transaction_id VARCHAR(20) PRIMARY KEY, -- Unique identifier of each transaction, typically UUID string as well
-    sender_id VARCHAR(20) NOT NULL, -- Unique identifier of each sender, typically UUID string and also it is FOREIGN KEY from Users table
-    receiver_id VARCHAR(20) NOT NULL, -- Unique identifier of each receiver, typically UUID string and also it is FOREIGN KEY from Users table
-    category_id VARCHAR(20) NOT NULL, -- Unique identifier of each category, typically UUID string and also it is FOREIGN KEY  from Transaction_category table
-    amount DECIMAL(15, 2) NOT NULL, -- This is the amount that has been received, sent, paid, withdrawaled, or deposited
-    balance_before DECIMAL(15, 2), -- This is the balance of user haved before any transaction done
-    balance_after DECIMAL(15, 2), -- Then this the updated balance of the user after any transaction done
-    transaction_date DATETIME NOT NULL, -- This is when the transaction tooked place
-    message_sender VARCHAR(250),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status ENUM('Completed', 'Pending', 'Failed', 'Reversed'),
+    transaction_id VARCHAR(20) PRIMARY KEY COMMENT 'Unique identifier of each transaction, typically UUID string as well',
+    sender_id VARCHAR(20) NOT NULL COMMENT 'Unique identifier of each sender, typically UUID string and also it is FOREIGN KEY from Users table'
+    receiver_id VARCHAR(20) NOT NULL COMMENT 'Unique identifier of each receiver, typically UUID string and also it is FOREIGN KEY from Users table'
+    category_id VARCHAR(20) NOT NULL COMMENT 'Unique identifier of each category, typically UUID string and also it is FOREIGN KEY  from Transaction_category table'
+    amount DECIMAL(15, 2) NOT NULL COMMENT 'Transaction value',
+    balance_before DECIMAL(15, 2) COMMENT 'This is the balance of user haved before any transaction happened',
+    balance_after DECIMAL(15, 2) COMMENT 'Then this the updated balance of the user after any transaction happened',
+    transaction_date DATETIME NOT NULL COMMENT 'This is when the transaction tooked place',
+    message_sender VARCHAR(250) COMMENT 'Message from sender when any transaction happened',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'When that transaction happened',
+    status ENUM('Completed', 'Pending', 'Failed', 'Reversed') COMMENT 'Status of the transaction',
     Foreign Key (sender_id) REFERENCES USERS (user_id),
     Foreign Key (receiver_id) REFERENCES USERS (user_id),
     Foreign Key (category_id) REFERENCES TRANSACTION_CATEGORY (category_id)
 
-
+    
 );
 
 -- Records for Transactions table
@@ -76,28 +76,18 @@ INSERT INTO TRANSACTIONS (transaction_id, sender_id, receiver_id, category_id, a
 ('TXN-004', 'u_04', 'u_05', 'CAT-WDR', 5000.00, 10000.00, 5000.00, NOW(), 'Agent withdrawal', 'Failed'),
 ('TXN-005', 'u_05', 'u_01', 'CAT-DEP', 40000.00, 100000.00, 160000.00, NOW(), 'Bank deposit', 'Completed');
 
--- Indexes for faster read times in teh tables.
-
-CREATE INDEX idx_users_phone ON USERS(phone_number);
-CREATE INDEX idx_transactions_sender ON TRANSACTIONS(sender_id);
-CREATE INDEX idx_transactions_receiver ON TRANSACTIONS(receiver_id);
-CREATE INDEX idx_transactions_date ON TRANSACTIONS(transaction_date);
-CREATE INDEX idx_transactions_status ON TRANSACTIONS(status);
-CREATE INDEX idx_system_logs_user ON SYSTEM_LOGS(user_id);
-
 -- System Logs table
-
 create table SYSTEM_LOGS (
-    log_id VARCHAR(20) PRIMARY KEY,
-    log_type ENUM('INFO', 'WARNING', 'ERROR', 'DEBUG'),
-    message TEXT NOT NULL,
-    user_id VARCHAR(20) NULL,
-    transaction_id VARCHAR(20) NULL, -- Relationships (Foreign Keys) set to allow NULL
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    log_id VARCHAR(20) PRIMARY KEY COMMENT 'Unique Identifier',
+    log_type ENUM('INFO', 'WARNING', 'ERROR', 'DEBUG') COMMENT 'Type of log when any action happened',
+    message TEXT NOT NULL COMMENT 'Message of that log',
+    user_id VARCHAR(20) NULL COMMENT 'User id which Foreign Key from USER table',
+    transaction_id VARCHAR(20) NULL COMMENT 'Transaction id of that log (fk from transaction table)',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'When that log happened',
     Foreign Key (user_id) REFERENCES USERS (user_id),
     Foreign Key (transaction_id) REFERENCES TRANSACTIONS (transaction_id)
 
-);
+)
 
 -- Records For The System Logs
 
@@ -108,17 +98,16 @@ insert into SYSTEM_LOGS(log_id, log_type, message, user_id, transaction_id) VALU
 ('LOG-004', 'DEBUG', 'SMS gateway response: 200 OK', NULL, 'TXN-001'),
 ('LOG-005', 'INFO', 'Transaction completed successfully', 'u_05', 'TXN-004');
 
--- Transaction System Log Table (Creating Many-to-Many Cardinality)
-
+-- Transaction System Log Table (Many to Many Cardinality)
 create table TRANSACTION_SYSTEM_LOG (
-    system_log_id VARCHAR(20) PRIMARY KEY,
-    transaction_id VARCHAR(20),
-    log_id VARCHAR(20),
+    system_log_id VARCHAR(20) PRIMARY KEY COMMENT 'Unique identifier'
+    transaction_id VARCHAR(20) COMMENT 'Transaction id (fk from Transaction table)',
+    log_id VARCHAR(20) COMMENT 'Log id (fk from System Logs table)',
     Foreign Key (transaction_id) REFERENCES TRANSACTIONS (transaction_id),
     Foreign Key (log_id) REFERENCES SYSTEM_LOGS(log_id)
 );
 
--- Records for Transaction System Logs
+-- Records for Transaction System Logs 
 
 insert into TRANSACTION_SYSTEM_LOG (system_log_id, transaction_id, log_id) VALUES
 ('TSL-001', 'TXN-001', 'LOG-004'), -- Links a success txn to a success log
@@ -126,3 +115,13 @@ insert into TRANSACTION_SYSTEM_LOG (system_log_id, transaction_id, log_id) VALUE
 ('TSL-003', 'TXN-005', 'LOG-005'), -- Links a bank deposit to a debug log
 ('TSL-004', 'TXN-002', 'LOG-004'), -- Another txn link
 ('TSL-005', 'TXN-003', 'LOG-005'); -- Linking a pending txn to a debug log
+
+-- Indexes for faster read times in the tables.
+
+CREATE INDEX idx_users_phone ON USERS(phone_number);
+CREATE INDEX idx_transactions_sender ON TRANSACTIONS(sender_id);
+CREATE INDEX idx_transactions_receiver ON TRANSACTIONS(receiver_id);
+CREATE INDEX idx_transactions_date ON TRANSACTIONS(transaction_date);
+CREATE INDEX idx_transactions_status ON TRANSACTIONS(status);
+CREATE INDEX idx_system_logs_user ON SYSTEM_LOGS(user_id);
+
