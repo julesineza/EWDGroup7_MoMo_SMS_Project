@@ -6,7 +6,7 @@
 MoMo Insights Team
 
 ## Team Members
-- Ineza Jules – [julesineza@alustudent.com](mailto:julesineza@alustudent.com)
+- Ineza Jules – [j.ineza@alustudent.com](mailto:julesineza@alustudent.com)
 - Charles Were Angoye – [c.angoye@alustudent.com](mailto:c.angoye@alustudent.com)
 - Nyiramanzi Igihozo– [n.igihozo@alustudent.com](mailto:n.igihozo@alustudent.com)
 - Nawaf Awadallah Ahmed – [n.ahmed@alustudent.com](mailto:n.ahmed@alustudent.com)
