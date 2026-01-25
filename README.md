@@ -128,18 +128,8 @@ A single log can be associated with multiple transactions.
 ## Design Reasoning
 
 Users and transactions are separated to avoid data duplication and to keep user-specific data (such as phone number and registration date) independent from transactional data.
-The database has **two core tables**:
-  - USERS
-  - TRANSACTIONS
-Three **supporting tables** enhance structure and maintainability:
-  - TRANSACTION_CATEGORY
-  - SYSTEM_LOGS
-  - TRANSACTION_SYSTEM_LOG
-Foreign keys are used extensively to:
-  - Link transactions to users
-  - Associate transactions with categories
-  - Connect logs to transactions and users
-Junction tables are used where **many-to-many cardinality** exists, ensuring the design remains normalized and scalable.
+The database has **two core tables**: USERS , TRANSACTIONS **Three supporting tables** to enhance structure and maintainability: TRANSACTION_CATEGORY , SYSTEM_LOGS , TRANSACTION_SYSTEM_LOG . **Foreign keys** are used extensively to: Link transactions to users , Associate transactions with categories and Connect logs to transactions and users
+.Junction tables are used where **many-to-many cardinality** exists, ensuring the design remains normalized and scalable.
 
 ---
 
