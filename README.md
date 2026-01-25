@@ -30,55 +30,125 @@ Architecture Diagram:
 Trello Project Board:
 [![Trello](https://img.shields.io/badge/Trello-Scrum%20Board-blue?style=for-the-badge&logo=trello)](https://trello.com/invite/b/6962965c59508e6196870656/ATTI01572b19ae2292c8ecaaa91d9f80b5d6A494334E/ewdgroup7momosmsproject)
 
-MoMo SMS Database Design Explanation
 
-In our database, we have five tables that work cooperatively to manage data parsed from the modified_sms_v2.xml file. 
+# MoMo SMS Database Design Explanation
 
-Database Architecture :
-Database name : Momo
-Total number of Tables : 5 
-Database type : Relational database 
+This document explains the structure and reasoning behind the **MoMo SMS database**, which stores and manages data parsed from the modified_sms_v2.xml file.
 
-The USERS table   has the following attributes : 
-user_id (primary key)
-full_name ,
-phone_number (unique for every user),
-reg_date, 
-last_transaction for every customer with a unique id represented as user_id.
-created_at : this is a timestamp of the time and date of when the entry of the user has been created . 
+---
 
-The TRANSACTIONS entity , is the most important table here  which contains all the entries related to the transfers made by the user or to the user , like 
-Transaction_id (primary key) , 
-Sender_id (foreign key from USERS)
-receiver_id (foreign key from USERS)
-Category_id (foreign key from the TRANSACTION_CATEGORY)
-amount  , that needs to be positive , you can not send negative money 
-balance_before , 
-balance_after, 
-trans_date, 
-status  , like Completed or Pending or Failed or Reversed,
-messages , messages that come with the transaction promotional or warnings
-created at : datetime which stores the time and date the transaction has been made
-The TRANSACTION_CATEGORY table stores the various transaction categories, using column fields like : 
-Category_id (primary key ),
-category_name, 
-category_type, which also includes categories like Send, Payment, Withdrawal, Deposit, Received, 
-description. 
-Created_at : datetime which stores the time and time the transaction category has been made 
+## Database Architecture
 
-The SYSTEM_LOGS table tracks what happens in the system with : 
-Log_id (primary key)
-log_type (e.g., INFO/WARNING/ERROR/DEBUG), 
-message, 
-Created_at : datetime .
-user_id (foreign key from USERS table)
-transaction_id  (foreign key from TRANSACTIONS table)
+**Database Name:** Momo  
+**Database Type:** Relational Database  
+**Total Number of Tables:** 5  
 
-This table  helps in debugging the system faster.
+The database is designed to efficiently store, relate, and analyze Mobile Money (MoMo) SMS transaction data while maintaining data integrity and scalability.
 
-The TRANSACTION_SYSTEM_LOG is a junction table  used to relate the transaction with the log , the table has a many to many relationship between transactions and logs and so is used as a junction table . 
+---
 
-Reasoning
+## Tables Overview
 
-We separated transactions from users because users have a lot of important information like phone number , registration date to say a few . We hence have two main tables for tracking momo transactions (users and transactions ) and 3 tables (transactions_category , system_logs and transaction_system_log) which support the transactions . We connect the data using foreign keys between tables to connect transactions to users , logs to transactions , transaction to categories and we furthermore use junction tables to handle many to many cardinality relationships .
+### 1. USERS
 
+The USERS table stores information about all MoMo customers.
+
+**Attributes:**
+user_id (Primary Key)  
+full_name  
+phone_number (Unique for every user)  
+reg_date  
+last_transaction  
+created_at (Timestamp indicating when the user record was created)
+
+Each user is uniquely identified by user_id.
+
+---
+
+### 2. TRANSACTIONS
+
+The TRANSACTIONS table is the core table of the database. It stores all transaction records, whether money is sent, received, withdrawn, or deposited.
+
+**Attributes:**
+transaction_id (Primary Key)  
+sender_id (Foreign Key → USERS.user_id)  
+receiver_id (Foreign Key → USERS.user_id)  
+category_id (Foreign Key → TRANSACTION_CATEGORY.category_id)  
+amount (Must be positive)  
+balance_before  
+balance_after  
+trans_date  
+status (Completed, Pending, Failed, Reversed)  
+message (Promotional or warning messages related to the transaction)  
+created_at (Datetime indicating when the transaction was created)
+
+---
+
+### 3. TRANSACTION_CATEGORY
+
+The TRANSACTION_CATEGORY table defines the different types of transactions supported by the system.
+
+**Attributes:**
+category_id (Primary Key)  
+category_name  
+category_type (e.g., Send, Payment, Withdrawal, Deposit, Received)  
+description  
+created_at (Datetime indicating when the category was created)
+
+This table helps standardize transaction classification.
+
+---
+
+### 4. SYSTEM_LOGS
+
+The SYSTEM_LOGS table tracks system-level events and actions, which helps with monitoring and debugging.
+
+**Attributes:**
+log_id (Primary Key)  
+log_type (INFO, WARNING, ERROR, DEBUG)  
+message  
+created_at (Datetime)  
+user_id (Foreign Key → USERS.user_id)  
+transaction_id (Foreign Key → TRANSACTIONS.transaction_id)
+
+This table makes it easier to trace issues related to users or transactions.
+
+---
+
+### 5. TRANSACTION_SYSTEM_LOG
+
+The TRANSACTION_SYSTEM_LOG table is a **junction table** that links transactions and system logs.
+
+It supports a **many-to-many relationship** between TRANSACTIONS and SYSTEM_LOGS.
+A single transaction can have multiple logs.
+A single log can be associated with multiple transactions.
+
+---
+
+## Design Reasoning
+
+Users and transactions are separated to avoid data duplication and to keep user-specific data (such as phone number and registration date) independent from transactional data.
+The database has **two core tables**:
+  - USERS
+  - TRANSACTIONS
+Three **supporting tables** enhance structure and maintainability:
+  - TRANSACTION_CATEGORY
+  - SYSTEM_LOGS
+  - TRANSACTION_SYSTEM_LOG
+Foreign keys are used extensively to:
+  - Link transactions to users
+  - Associate transactions with categories
+  - Connect logs to transactions and users
+Junction tables are used where **many-to-many cardinality** exists, ensuring the design remains normalized and scalable.
+
+---
+
+## Summary
+
+This relational design ensures:
+Data integrity through foreign keys  
+Clear separation of concerns  
+Easier debugging and auditing  
+Scalability for future features and analytics  
+
+The schema provides a solid foundation for processing, querying, and analyzing MoMo SMS transaction data.
