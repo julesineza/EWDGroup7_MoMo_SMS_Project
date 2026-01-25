@@ -31,7 +31,7 @@ insert into USERS (user_id, full_name, phone_number, reg_date, last_transaction,
 
 create table TRANSACTION_CATEGORY (
     category_id VARCHAR(20) PRIMARY KEY COMMENT 'Unique identifier for each category, typically UUID string also',
-    category_name VARCHAR(50) NOT NULL UNIQUE COMMENT 'Category of the transaction'
+    category_name VARCHAR(50) NOT NULL UNIQUE COMMENT 'Category of the transaction',
     category_type ENUM('Received', 'Send', 'Payment', 'Withdrawal', 'Deposit') COMMENT 'This is the type of transaction occured',
     description TEXT COMMENT 'This is a text message describing the transaction occured',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'This automatically generated time of when the transaction occured'
@@ -50,9 +50,9 @@ insert into TRANSACTION_CATEGORY (category_id, category_name, category_type, des
 
 create table TRANSACTIONS (
     transaction_id VARCHAR(20) PRIMARY KEY COMMENT 'Unique identifier of each transaction, typically UUID string as well',
-    sender_id VARCHAR(20) NOT NULL COMMENT 'Unique identifier of each sender, typically UUID string and also it is FOREIGN KEY from Users table'
-    receiver_id VARCHAR(20) NOT NULL COMMENT 'Unique identifier of each receiver, typically UUID string and also it is FOREIGN KEY from Users table'
-    category_id VARCHAR(20) NOT NULL COMMENT 'Unique identifier of each category, typically UUID string and also it is FOREIGN KEY  from Transaction_category table'
+    sender_id VARCHAR(20) NOT NULL COMMENT 'Unique identifier of each sender, typically UUID string and also it is FOREIGN KEY from Users table',
+    receiver_id VARCHAR(20) NOT NULL COMMENT 'Unique identifier of each receiver, typically UUID string and also it is FOREIGN KEY from Users table',
+    category_id VARCHAR(20) NOT NULL COMMENT 'Unique identifier of each category, typically UUID string and also it is FOREIGN KEY  from Transaction_category table',
     amount DECIMAL(15, 2) NOT NULL COMMENT 'Transaction value',
     balance_before DECIMAL(15, 2) COMMENT 'This is the balance of user haved before any transaction happened',
     balance_after DECIMAL(15, 2) COMMENT 'Then this the updated balance of the user after any transaction happened',
