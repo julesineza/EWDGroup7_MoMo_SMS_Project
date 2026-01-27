@@ -1,73 +1,98 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Momo transaction",
-  "description": "A financial transaction record in the mobile money system.",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CompleteTransactionResponse",
+  "description": "API response with full transaction details and all related entities",
   "type": "object",
-  "required": ["transaction_id", "sender_id", "category_id", "amount", "status", "created_at"],
   "properties": {
-    "transaction_id": {
-      "type": "string",
-      "maxLength": 20,
-      "description": "Primary Key from Transactions table"
+    "transaction": {
+      "type": "object",
+      "properties": {
+        "transaction_id": {
+          "type": "integer"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "balance_after": {
+          "type": "number"
+        },
+        "transaction_timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "participants": {
+          "type": "array",
+          "description": "All users involved in this transaction",
+          "items": {
+            "type": "object",
+            "properties": {
+              "role_type": {
+                "type": "string"
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "integer"
+                  },
+                  "full_name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "categories": {
+          "type": "array",
+          "description": "All applicable transaction categories",
+          "items": {
+            "type": "object",
+            "properties": {
+              "category_id": {
+                "type": "integer"
+              },
+              "category_name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "source_sms": {
+          "type": "object",
+          "description": "Original SMS log that generated this transaction",
+          "properties": {
+            "log_id": {
+              "type": "integer"
+            },
+            "raw_body": {
+              "type": "string"
+            }
+          }
+        }
+      }
     },
-    
-    "sender_id": {
-      "type": "string",
-      "maxLength": 20,
-      "description": "Reference to users table"
-    },
-    "receiver_id": {
-      "type": "string",
-      "maxLength": 20,
-      "description": "Reference to users table (Nullable in Logic implies External Transfers?)"
-    },
-    "category_id": {
-      "type": "string",
-      "maxLength": 20,
-      "description": "Reference to transaction_category table"
-    },
-
-
-    "amount": {
-      "type": "number",
-      "description": "Mapped from decimal(15,2)"
-    },
-    "fee": {
-      "type": "number",
-      "default": 0.00
-    },
-    "balance_before": { "type": "number" },
-    "balance_after": { "type": "number" },
-
-    
-    "status": {
-      "type": "string",
-      "enum": ["completed", "pending", "failed", "reversed"],
-      "description": "Strict ENUM mapping from ERD"
-    },
-    "trans_date": {
-      "type": "string",
-      "format": "date-time"
-    },
-    "message_sender": {
-      "type": "string",
-      "maxLength": 250
-    },
-
-
-    "logs": {
-      "type": "array",
-      "description": "Derived from system_logs linked via transaction_system_log",
-      "items": {
-        "type": "object",
-        "properties": {
-          "log_id": { "type": "string" },
-          "log_type": { 
-            "type": "string", 
-            "enum": ["INFO", "WARNING", "ERROR", "DEBUG"] 
-          },
-          "message": { "type": "string" },
-          "created_at": { "type": "string", "format": "date-time" }
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "request_timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "response_time_ms": {
+          "type": "integer"
+        },
+        "api_version": {
+          "type": "string"
         }
       }
     }

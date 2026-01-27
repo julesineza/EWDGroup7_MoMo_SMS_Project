@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "User",
+  "description": "Represents a MoMo user derived from parsed SMS transactions",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "integer",
+      "description": "Primary key, auto-increment"
+    },
+    "full_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 255,
+      "description": "User's full name parsed from SMS"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp"
+    }
+  },
+  "required": [
+    "user_id",
+    "full_name",
+    "created_at"
+  ],
+  "additionalProperties": false
+}
