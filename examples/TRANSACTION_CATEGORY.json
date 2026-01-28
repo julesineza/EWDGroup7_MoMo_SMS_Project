@@ -1,0 +1,25 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "TransactionCategoryMap",
+    "description": "Resolves many-to-many relationship between transactions and categories",
+    "type": "object",
+    "properties": {
+        "category_id": {
+            "type": "string",
+            "description": "Primary key for the table"
+        },
+        "category_name": {
+            "type": "string",
+            "description": "category name of transaction"
+        },
+        "description": {
+            "type": "string",
+            "description": "description of transaction category"
+        }
+    },
+    "required": [
+        "category_id",
+        "category_name"
+    ],
+    "additionalProperties": false
+}
