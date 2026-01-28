@@ -17,7 +17,7 @@ CREATE TABLE USERS (
 INSERT INTO USERS (user_id, full_name) VALUES
 ('U101', 'Jane Smith'),
 ('U102', 'Samuel Carter'),
-('U103', 'Direct Payment Ltd')
+('U103', 'Direct Payment Ltd'),
 ('U004', 'Diana Moore'),
 ('U005', 'Ethan Brown');
 
@@ -113,4 +113,4 @@ INSERT INTO TRANSACTION_PARTICIPANTS (participant_id, transaction_id, user_id, r
 -- INDEXES
 
 CREATE INDEX idx_tx_date ON TRANSACTIONS(transaction_datetime);
-CREATE INDEX idx_tx_status ON TRANSACTIONS(status)
+CREATE INDEX idx_tx_status ON TRANSACTIONS(status);
