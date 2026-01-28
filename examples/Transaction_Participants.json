@@ -1,0 +1,35 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "TransactionParticipant",
+    "description": "Resolves many-to-many relationship between transactions and users with role context",
+    "type": "object",
+    "properties": {
+        "participant_id": {
+            "type": "integer",
+            "description": "Primary key for the table"
+        },
+        "transaction_id": {
+            "type": "integer",
+            "description": "Foreign key to Transactions"
+        },
+        "user_id": {
+            "type": "integer",
+            "description": "Foreign key to Users"
+        },
+        "role_type": {
+            "type": "string",
+            "enum": [
+                "SENDER",
+                "RECEIVER"
+            ],
+            "description": "Participant's role in the transaction"
+        }
+    },
+    "required": [
+        "participant_id",
+        "transaction_id",
+        "user_id",
+        "role_type"
+    ],
+    "additionalProperties": false
+}
