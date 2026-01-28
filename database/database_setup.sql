@@ -114,3 +114,14 @@ INSERT INTO TRANSACTION_PARTICIPANTS (participant_id, transaction_id, user_id, r
 
 CREATE INDEX idx_tx_date ON TRANSACTIONS(transaction_datetime);
 CREATE INDEX idx_tx_status ON TRANSACTIONS(status);
+
+CREATE INDEX idx_log_id ON TRANSACTIONS(log_id);
+
+CREATE INDEX idx_category_id ON TRANSACTION_CATEGORY_MAP(category_id)
+;
+
+CREATE INDEX idx_transaction_id ON TRANSACTION_CATEGORY_MAP(transaction_id);
+
+CREATE INDEX idx_transaction_id On TRANSACTION_PARTICIPANTS(transaction_id);
+
+CREATE INDEX idx_user_id ON TRANSACTION_PARTICIPANTS(user_id);
