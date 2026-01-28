@@ -1,86 +1,116 @@
--- Creating databases for project.
+-- Creating Database for the project
 
-create database MoMo;
+CREATE DATABASE MoMo;
 
--- Use that database for creating tables
+-- Use that database to create tables
 
-use MoMo;
-SELECT DATABASE(); 
+USE MoMo;
 
--- First we gonna create table for storing user's data (Is the main one)
+-- USERS TABLE (The Main one)
 
-create table USERS (
-    user_id VARCHAR(20) PRIMARY KEY, -- Unique identifier  for each user, typically UUID string
-    full_name VARCHAR(100) NOT NULL, -- The legal names of the account holder
-    phone_number VARCHAR(30) NOT NULL UNIQUE, -- Unique phone number of the user
-    reg_date DATETIME,
-    last_transaction DATETIME, -- This is the date and time of the last transaction has been occured
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- This is when the transaction has been occured
+CREATE TABLE USERS (
+    user_id VARCHAR(20) PRIMARY KEY COMMENT 'User identification',
+    full_name VARCHAR(100) NOT NULL COMMENT 'Registered name of the user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Time the action tooked place'
 );
 
--- Records for the Users table
+INSERT INTO USERS (user_id, full_name) VALUES
+('U101', 'Jane Smith'),
+('U102', 'Samuel Carter'),
+('U103', 'Direct Payment Ltd')
+('U004', 'Diana Moore'),
+('U005', 'Ethan Brown');
 
-insert into USERS (user_id, full_name, phone_number, reg_date, last_transaction, created_at) VALUES
-('u_01', 'Eddy BYIRINGIRO', '+250788381001', '2025-01-01 00:00:00', '2025-12-31 11:59:00', NOW()),
-('u_02', 'Celine IRAKOZE', '+250788392002', '2025-03-15 09:36:35', '2025-11-28 13:41:30', NOW()),
-('u_03', 'Jane GASINGE', '+250788403003', '2025-07-21 10:40:49', '2025-12-27 08:17:43', NOW()),
-('u_04', 'Kellia INEZA', '+250788414004', '2025-08-08 11:55:28', '2025-12-02 15:22:37', NOW()),
-('u_05', 'Angel MUGISHA', '+250788425005', '2025-05-25 12:18:47', '2026-01-22 17:30:19', NOW());
 
--- Create table of Transaction_category
 
-create table TRANSACTION_CATEGORY (
-    category_id VARCHAR(20) PRIMARY KEY, -- Unique identifier for each category, typically UUID string also
-    category_name VARCHAR(50) NOT NULL UNIQUE, -- Category of the transaction
-    category_type ENUM('Received', 'Send', 'Payment', 'Withdrawal', 'Deposit'), -- This is the type of transaction that occured
-    description TEXT, -- This is a text message that comes with the transaction promotional ...
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- This automatically generated time of when the transaction occured
+
+-- SYSTEM LOGS (RAW SMS) TABLE
+
+CREATE TABLE SYSTEM_LOGS (
+    log_id VARCHAR(20) PRIMARY KEY COMMENT 'Log identification',
+    raw_body TEXT NOT NULL COMMENT 'Message of the action',
+    received_at DATETIME NOT NULL COMMENT 'When that action has been received',
+    processed_status ENUM('PENDING','PROCESSED','FAILED') DEFAULT 'PENDING' COMMENT 'Status of the action' 
 );
 
--- Records for Transaction_category table
+INSERT INTO SYSTEM_LOGS (log_id, raw_body, received_at, processed_status) VALUES
+('L1001', 'You have received 2000 RWF from Jane Smith (*********013) on your mobile money account at 2024-05-10 16:30:51. Message from sender: . Your new balance:2000 RWF. Financial Transaction Id: 76662021700.', '2024-05-10 16:30:51', 'PROCESSED'),
+('L1002', 'TxId: 73214484437. Your payment of 1000 RWF to Jane Smith 12845 has been completed at 2024-05-10 16:31:39. Your new balance: 1000 RWF. Fee was 0 RWF.', '2024-05-10 16:31:39', 'PROCESSED'),
+('L1003', 'TxId: 51732411227. Your payment of 600 RWF to Samuel Carter 95464 has been completed at 2024-05-10 21:32:32. Your new balance: 400 RWF. Fee was 0 RWF.', '2024-05-10 21:32:32', 'PROCESSED'),
+('L1004', '*113*R*A bank deposit of 40000 RWF has been added to your mobile money account at 2024-05-11 18:43:49. Your NEW BALANCE :40400 RWF.', '2024-05-11 18:43:49', 'PROCESSED'),
+('L1005', 'TxId: 17818959211. Your payment of 2000 RWF to Samuel Carter 14965 has been completed at 2024-05-11 18:48:42. Your new balance: 38400 RWF. Fee was 0 RWF.', '2024-05-11 18:48:42', 'PROCESSED');
 
-insert into TRANSACTION_CATEGORY (category_id, category_name, category_type, description) VALUES
-('CAT-P2P', 'Peer to peer', 'Send', 'Transferring money from two individual personal account'),
-('CAT-DEP', 'Bank Deposit', 'Deposit', 'Moving money from a linked bank account to MoMo account'),
-('CAT-BILL', 'Utility Bill', 'Payment', 'Paying for electricity, water, internet services or taxes'),
-('CAT-WDR', 'Agent Withdrawal', 'Withdrawal', 'Taking out physical money from your MoMo wallet from an authorized MoMo agents'),
-('CAT-SAL', 'Salary Deposit', 'Received', 'Monthly salary payment credited to the worker account');
+-- TRANSACTIONS TABLE
 
--- Create table of Transactions
-
-create table TRANSACTIONS (
-    transaction_id VARCHAR(20) PRIMARY KEY, -- Unique identifier of each transaction, typically UUID string as well
-    sender_id VARCHAR(20) NOT NULL, -- Unique identifier of each sender, typically UUID string and also it is FOREIGN KEY from Users table
-    receiver_id VARCHAR(20) NOT NULL, -- Unique identifier of each receiver, typically UUID string and also it is FOREIGN KEY from Users table
-    category_id VARCHAR(20) NOT NULL, -- Unique identifier of each category, typically UUID string and also it is FOREIGN KEY  from Transaction_category table
-    amount DECIMAL(15, 2) NOT NULL, -- This is the amount that has been received, sent, paid, withdrawaled, or deposited
-    balance_before DECIMAL(15, 2), -- This is the balance of user haved before any transaction done
-    balance_after DECIMAL(15, 2), -- Then this the updated balance of the user after any transaction done
-    transaction_date DATETIME NOT NULL, -- This is when the transaction tooked place
-    message_sender VARCHAR(250),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status ENUM('Completed', 'Pending', 'Failed', 'Reversed'),
-    Foreign Key (sender_id) REFERENCES USERS (user_id),
-    Foreign Key (receiver_id) REFERENCES USERS (user_id),
-    Foreign Key (category_id) REFERENCES TRANSACTION_CATEGORY (category_id)
-
-
+CREATE TABLE TRANSACTIONS (
+    transaction_id VARCHAR(20) PRIMARY KEY COMMENT 'Transaction identification',
+    amount DECIMAL(12,2) NOT NULL CHECK (amount > 0) COMMENT 'Amount of the transaction',
+    fee DECIMAL(10,2) DEFAULT 0 CHECK (fee >= 0) COMMENT 'Service fee of transaction',
+    balance_after DECIMAL(12,2) COMMENT 'Updated balance after transaction',
+    transaction_datetime DATETIME NOT NULL COMMENT 'When transaction happened',
+    status ENUM('COMPLETED','FAILED','PENDING') COMMENT 'Status of the transaction',
+    log_id VARCHAR(20) UNIQUE COMMENT 'FK from SYSTEM_LOGS',
+    FOREIGN KEY (log_id) REFERENCES SYSTEM_LOGS(log_id)
 );
 
--- Records for Transactions table
+INSERT INTO TRANSACTIONS (transaction_id, amount, fee, balance_after, transaction_datetime, status, log_id) VALUES
+('76662021700', 2000, 0, 2000, '2024-05-10 16:30:51', 'COMPLETED', 'L1001'),
+('73214484437', 1000, 0, 1000, '2024-05-10 16:31:39', 'COMPLETED', 'L1002'),
+('51732411227', 600, 0, 400, '2024-05-10 21:32:32', 'COMPLETED', 'L1003'),
+('D001', 40000, 0, 40400, '2024-05-11 18:43:49', 'COMPLETED', 'L1004'),
+('17818959211', 2000, 0, 38400, '2024-05-11 18:48:42', 'COMPLETED', 'L1005');
 
-INSERT INTO TRANSACTIONS (transaction_id, sender_id, receiver_id, category_id, amount, balance_before, balance_after, transaction_date, message_sender, status) VALUES
-('TXN-001', 'u_01', 'u_02', 'CAT-P2P', 30000.00, 100000.00, 50000.00, NOW(), 'Transfering Money to Hannington', 'Completed'),
-('TXN-002', 'u_02', 'u_03', 'CAT-P2P', 60000.50, 100000.00, 40000.00, NOW(), 'Reversing money from Kulio to Kevin', 'Pending'),
-('TXN-003', 'u_03', 'u_04', 'CAT-BILL', 10000.00, 25000.00, 15000.00, NOW(), 'Airtime payment', 'Completed'),
-('TXN-004', 'u_04', 'u_05', 'CAT-WDR', 5000.00, 10000.00, 5000.00, NOW(), 'Agent withdrawal', 'Failed'),
-('TXN-005', 'u_05', 'u_01', 'CAT-DEP', 40000.00, 100000.00, 160000.00, NOW(), 'Bank deposit', 'Completed');
+-- TRANSACTION CATEGORY TABLE
 
--- Indexes for faster read times in teh tables.
+CREATE TABLE TRANSACTION_CATEGORY (
+    category_id VARCHAR(20) PRIMARY KEY COMMENT 'Category identification',
+    category_name VARCHAR(50) UNIQUE NOT NULL COMMENT 'Name of the category',
+    description TEXT COMMENT 'Description text'
+);
 
-CREATE INDEX idx_users_phone ON USERS(phone_number);
-CREATE INDEX idx_transactions_sender ON TRANSACTIONS(sender_id);
-CREATE INDEX idx_transactions_receiver ON TRANSACTIONS(receiver_id);
-CREATE INDEX idx_transactions_date ON TRANSACTIONS(transaction_date);
-CREATE INDEX idx_transactions_status ON TRANSACTIONS(status);
-CREATE INDEX idx_system_logs_user ON SYSTEM_LOGS(user_id);
+INSERT INTO TRANSACTION_CATEGORY (category_id, category_name, description) VALUES
+('C101', 'Payment Received', 'Money received from another user'),
+('C102', 'Payment Sent', 'Money sent to another user'),
+('C103', 'Bank Deposit', 'Deposit from bank into MoMo account'),
+('C104', 'Airtime Purchase', 'Purchase of airtime or tokens'),
+('C105', 'Refund', 'Refunds from failed transactions');
+
+-- M:N TRANSACTION CATEGORY TABLE
+
+CREATE TABLE TRANSACTION_CATEGORY_MAP (
+    transaction_id VARCHAR(20) COMMENT 'Transaction identification',
+    category_id VARCHAR(20) COMMENT 'FK from TRANSACTION_CATEGORY',
+    PRIMARY KEY (transaction_id, category_id) COMMENT 'Identifications',
+    FOREIGN KEY (transaction_id) REFERENCES TRANSACTIONS(transaction_id),
+    FOREIGN KEY (category_id) REFERENCES TRANSACTION_CATEGORY(category_id)
+);
+
+INSERT INTO TRANSACTION_CATEGORY_MAP (transaction_id, category_id) VALUES
+('76662021700', 'C101'),  -- received from Jane Smith
+('73214484437', 'C102'),  -- payment to Jane Smith
+('51732411227', 'C102'),  -- payment to Samuel Carter
+('D001', 'C103'),          -- bank deposit
+('17818959211', 'C102');  -- payment to Samuel Carter
+
+-- TRANSACTION PARTICIPANTS TABLE
+
+CREATE TABLE TRANSACTION_PARTICIPANTS (
+    participant_id VARCHAR(20) PRIMARY KEY COMMENT 'Participant identification',
+    transaction_id VARCHAR(20) COMMENT 'FK from TRANSACTION Table',
+    user_id VARCHAR(20) COMMENT 'FK from USER Table',
+    role ENUM('SENDER','RECEIVER') NOT NULL COMMENT 'Role of the user',
+    FOREIGN KEY (transaction_id) REFERENCES TRANSACTIONS(transaction_id),
+    FOREIGN KEY (user_id) REFERENCES USERS(user_id)
+);
+
+INSERT INTO TRANSACTION_PARTICIPANTS (participant_id, transaction_id, user_id, role) VALUES
+('P1001', '76662021700', 'U101', 'RECEIVER'),
+('P1002', '73214484437', 'U101', 'RECEIVER'),
+('P1003', '51732411227', 'U102', 'RECEIVER'),
+('P1004', 'D001', 'U103', 'RECEIVER'),
+('P1005', '17818959211', 'U102', 'RECEIVER');
+
+-- INDEXES
+
+CREATE INDEX idx_tx_date ON TRANSACTIONS(transaction_datetime);
+CREATE INDEX idx_tx_status ON TRANSACTIONS(status)

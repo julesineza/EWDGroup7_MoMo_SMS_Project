@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CompleteTransactionResponse",
+  "description": "API response with full transaction details and all related entities",
+  "type": "object",
+  "properties": {
+    "transaction": {
+      "type": "object",
+      "properties": {
+        "transaction_id": {
+          "type": "integer"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "balance_after": {
+          "type": "number"
+        },
+        "transaction_timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "participants": {
+          "type": "array",
+          "description": "All users involved in this transaction",
+          "items": {
+            "type": "object",
+            "properties": {
+              "role_type": {
+                "type": "string"
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "integer"
+                  },
+                  "full_name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "categories": {
+          "type": "array",
+          "description": "All applicable transaction categories",
+          "items": {
+            "type": "object",
+            "properties": {
+              "category_id": {
+                "type": "integer"
+              },
+              "category_name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "source_sms": {
+          "type": "object",
+          "description": "Original SMS log that generated this transaction",
+          "properties": {
+            "log_id": {
+              "type": "integer"
+            },
+            "raw_body": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "request_timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "response_time_ms": {
+          "type": "integer"
+        },
+        "api_version": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
