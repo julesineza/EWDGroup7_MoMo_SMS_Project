@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Transaction",
+  "description": "Confirmed financial transaction derived from SMS",
+  "type": "object",
+  "properties": {
+    "transaction_id": {
+      "type": "integer",
+      "description": "Database primary key"
+    },
+    "log_id": {
+      "type": "integer",
+      "description": "Foreign key to System_Logs"
+    },
+    "amount": {
+      "type": "number",
+      "minimum": 0,
+      "multipleOf": 0.01,
+      "description": "Transaction amount in local currency"
+    },
+    "balance_after": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "description": "Account balance after transaction"
+    },
+    "transaction_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the financial event occurred"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "COMPLETED",
+        "PENDING",
+        "FAILED",
+        "REVERSED"
+      ],
+      "default": "COMPLETED"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+    
+  },
+  "required": [
+    "transaction_id",
+    
+    "log_id",
+    "amount",
+    "transaction_timestamp",
+    "transaction_status"
+  ],
+  "additionalProperties": false
+}
