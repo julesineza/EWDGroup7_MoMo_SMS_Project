@@ -1,23 +1,25 @@
-# This for search using linear method only
+# This test for linear search
 
-from parser import parse
+import time
+from parser import parse  # make sure parser_file.py is your parser
 
-def linear_search(data_list, target_id):
-    for item in data_list:
-        # We must access the 'id' key in the dictionary
-        if item.get('id') == target_id:
-            return item
+# Load transactions
+transactions = parse()
+
+# Linear search function
+def linear_search(transactions, search_id):
+    for t in transactions:
+        if t['id'] == search_id:
+            return t
     return None
 
-data = parse()
-# Pick the very last ID to prove the loop can go start-to-finish
-target = data[-1]['id'] 
+# Test with 20 records (or fewer if your XML has less)
+test_ids = [t['id'] for t in transactions[:20]]
 
-result = linear_search(data, target)
+print("Linear Search Results:\n")
 
-if result:
-    print(f"SUCCESS: Linear Search found {target}!")
-    print(f"Data found: {result['sms']['body'][:100]}...") # Print a bit of the message
-else:
-    print(f"FAILURE: Linear Search could not find {target}.")
-
+for search_id in test_ids:
+    start = time.time()
+    result = linear_search(transactions, search_id)
+    end = time.time()
+    print(f"ID {search_id}: Found={result is not None}, Time={end - start:.8f}s")
