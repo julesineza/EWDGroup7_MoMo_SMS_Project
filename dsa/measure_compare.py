@@ -17,7 +17,7 @@ def linear_search(transactions, search_id):
 def dict_lookup(transaction_dict, search_id):
     return transaction_dict.get(search_id, None)
 
-#  Testing with 20 random IDs (or fewer if less than 20 records exist)
+#  Testing with 20 records
 test_ids = [t['id'] for t in transactions[:20]]
 
 print("Comparing search times for 20 records...\n")
