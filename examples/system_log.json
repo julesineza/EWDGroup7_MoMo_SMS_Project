@@ -1,8 +1,39 @@
 {
-  "logId": "LOG-8821",
-  "logType": "info",
-  "message": "SMS backup processed successfully via Android Agent",
-  "userId": "USR-001",
-  "transactionId": "17818959211",
-  "createdAt": "2024-05-12T03:47:45Z"
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SystemLog",
+  "description": "Raw SMS message storage for audit trail",
+  "type": "object",
+  "properties": {
+    "log_id": {
+      "type": "integer",
+      "description": "Primary key"
+    },
+    "date_sent": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Original SMS timestamp"
+    },
+    "raw_body": {
+      "type": "string",
+      "description": "Raw SMS text content"
+    },
+    "processed_status": {
+      "type": "string",
+      "enum": [
+        "Processed,pending,failed"
+      ]
+    },
+    "receiver_by": {
+      "type": "string",
+      "format": "date-time",
+      "description": "time the log has been receiver "
+    }
+  },
+  "required": [
+    "log_id",
+    "raw_body",
+    "receiver_by",
+    "processed_status"
+  ],
+  "additionalProperties": false
 }

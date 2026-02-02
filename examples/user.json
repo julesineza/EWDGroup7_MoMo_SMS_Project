@@ -1,8 +1,31 @@
 {
-  "userId": "USR-002",
-  "name": "Samuel Carter",
-  "phoneNumber": "250791666666",
-  "regDate": "2026-01-10T21:40:30Z",
-  "lastTransaction": "2026-01-11T18:48:42Z",
-  "createdAt": "2026-01-10T21:40:30Z"
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "User",
+  "description": "Represents a MoMo user derived from parsed SMS transactions",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "integer",
+      "description": "Primary key, auto-increment"
+    },
+    "full_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 255,
+      "description": "User's full name parsed from SMS"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp"
+    }
+  },
+  "required": [
+    "user_id",
+    "full_name",
+    "created_at"
+  ],
+  "additionalProperties": false
 }

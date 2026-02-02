@@ -1,0 +1,21 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "TransactionCategoryMap",
+    "description": "Resolves many-to-many relationship between transactions and categories",
+    "type": "object",
+    "properties": {
+        "transaction_id": {
+            "type": "integer",
+            "description": "Foreign key to Transaction and primary key(compsite key )"
+        },
+        "category_id": {
+            "type": "integer",
+            "description": "Foreign key to Transaction_Categories (compsite key )"
+        }
+    },
+    "required": [
+        "transaction_id",
+        "category_id"
+    ],
+    "additionalProperties": false
+}
