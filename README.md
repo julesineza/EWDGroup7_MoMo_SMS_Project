@@ -35,9 +35,13 @@ Architecture Diagram:
 Trello Project Board:
 [![Trello](https://img.shields.io/badge/Trello-Scrum%20Board-blue?style=for-the-badge&logo=trello)](https://trello.com/invite/b/6962965c59508e6196870656/ATTI01572b19ae2292c8ecaaa91d9f80b5d6A494334E/ewdgroup7momosmsproject)
 
-# Team participation sheet
+# Team participation sheet Database implementation
 
 https://docs.google.com/spreadsheets/d/16CogD206nQywE-DSJM5fJfIYAEJY_wS3HNVKH_5iqK4/edit?usp=sharing
+
+# Team participation sheet Api assignment 
+
+https://github.com/julesineza/EWDGroup7_MoMo_SMS_Project.git
 
 # Design Rationale and Justification
 
