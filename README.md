@@ -58,9 +58,12 @@ momo-sms-api/
 │   └── app.py              # REST API implementation with Basic Auth
 |   └── authentication.py   #security and authentication
 ├── dsa/
-│   ├── xml_parser.py          # XML to JSON parsing module
-│   └── search_comparison.py   # Linear search vs Dictionary lookup comparison
-|   └── modified_sms_v2.xml
+│   ├── parser.py          # XML to JSON parsing module
+│   └── measure_compare.py   # Linear search vs Dictionary lookup comparison
+|   └── modified_sms_v2 (1).xml
+|   └── test_dict.py
+|   └── test_linear.py
+
 ├── docs/
 │   └── api_docs.md            # API endpoint documentation
 ├── screenshots/
