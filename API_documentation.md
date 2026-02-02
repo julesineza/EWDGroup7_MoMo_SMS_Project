@@ -48,8 +48,11 @@ Retrieves details for a specific transaction using it's ID
 
 ### End points and method
 GET /transactions/{id}
-Requeast example GET /transactions/Pay1691
-Respnse example:
+### Request example
+GET /transactions/Pay1691
+
+### Response example:
+
 {
   "id": "Pay1691",
   "sms": {
@@ -135,3 +138,9 @@ Delete /transaction/{id}
 curl -u admin:admin123 -X DELETE http://127.0.0.1:5000/transactions/Pay1694
 
 ### Respond example 
+{
+  "success": "Pay1694 removed successfully"
+}
+
+### Error codes
+ 404 Not found: The record ID dose not exist.
