@@ -41,7 +41,7 @@ https://docs.google.com/spreadsheets/d/16CogD206nQywE-DSJM5fJfIYAEJY_wS3HNVKH_5i
 
 # Team participation sheet Api assignment 
 
-[https://github.com/julesineza/EWDGroup7_MoMo_SMS_Project.git](https://docs.google.com/spreadsheets/d/1U3hKp27i8_618UjpH6cpvcbXxSsD7TDQQAbl4X8Em_M/edit?usp=sharing)
+https://docs.google.com/spreadsheets/d/1U3hKp27i8_618UjpH6cpvcbXxSsD7TDQQAbl4X8Em_M/edit?usp=sharing
 
 # Design Rationale and Justification
 
