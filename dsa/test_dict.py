@@ -1,20 +1,26 @@
-# This search way is for using dictionary look up only
+import time
+from parser import parse  # your parser
 
-from parser import parse
+# Load transactions
+transactions = parse()
 
-data = parse()
-# Create the dictionary
-# We map the ID string to the whole dictionary object
-data_dict = {item['id']: item for item in data}
+# Build dictionary for fast lookup
+transaction_dict = {t['id']: t for t in transactions}
 
 # Pick the very last ID to prove the loop can go start-to-finish
 target = data[-20]['id']
 
-# Look up is instant O(1)
-result = data_dict.get(target)
+# Dictionary lookup function
+def dict_lookup(transaction_dict, search_id):
+    return transaction_dict.get(search_id, None)
 
-if result:
-    print(f"SUCCESS: Dictionary found {target} instantly!")
-    print(f"Data found: {result['sms']['body'][:100]}...") # Print a bit of the message
-else:
-    print(f"FAILURE: Dictionary is missing {target}.")
+# Test with 20 records
+test_ids = [t['id'] for t in transactions[:20]]
+
+print("Dictionary Lookup Results:\n")
+
+for search_id in test_ids:
+    start = time.time()
+    result = dict_lookup(transaction_dict, search_id)
+    end = time.time()
+    print(f"ID {search_id}: Found={result is not None}, Time={end - start:.8f}s")
