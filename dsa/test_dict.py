@@ -8,7 +8,7 @@ data = parse()
 data_dict = {item['id']: item for item in data}
 
 # Pick the very last ID to prove the loop can go start-to-finish
-target = data[-1]['id']
+target = data[-20]['id']
 
 # Look up is instant O(1)
 result = data_dict.get(target)
