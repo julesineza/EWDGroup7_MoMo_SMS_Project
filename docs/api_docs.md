@@ -3,7 +3,7 @@
 ## Authentication
 All endpoints (except the home route) require Basic Authentication.
 - Type: Basic Auth
-- Credentials: Defined in `etl/authentication.py` (Default: `admin` / `secret`)
+- Credentials: Defined in `api/authentication.py` (Default: `admin` / `secret`)
 
 ---
 
