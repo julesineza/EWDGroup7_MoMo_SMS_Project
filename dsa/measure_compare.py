@@ -37,7 +37,9 @@ for search_id in test_ids:
 
 # 6. Reflection
 print("\nReflection:")
-print("So this is our findings")
+print("So this is our findings according to your questions")
+print("Why is dictionary lookup faster than linear search?")
 print("Dictionary lookup is faster because it uses a hash table internally, allowing direct access by key (O(1)) instead of scanning each element (O(n)).")
+print("Can you suggest another data structure or algorithm that could improve search efficiency?")
 print("Another data structure that could improve search efficiency for large datasets is a balanced binary search tree (like AVL or Red-Black tree) or using a database index.")
 
